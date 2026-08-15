@@ -1,0 +1,196 @@
+/* ============================================================
+   LAYOUT minimalista — izq: 3 recuadros · der: cuenta regresiva
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
+
+body {
+  font-family: var(--font-display);
+  background: var(--void-900);
+  color: var(--chrome-100);
+  overflow: hidden;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+}
+
+.app {
+  position: relative;
+  height: 100%;
+  display: flex;
+  background: radial-gradient(ellipse 120% 80% at 50% -10%, var(--void-400) 0%, var(--void-900) 62%);
+}
+/* Lluvia matrix tenue detrás de todo */
+.app__matrix {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+/* El canvas debe llenar el contenedor; sin esto mide 300x150 por
+   defecto y la lluvia se amontona arriba-izquierda. */
+.app__matrix canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.app__content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(60px, 8vw, 150px);
+  padding: 0 clamp(30px, 5vw, 80px);
+  min-height: 0;
+}
+
+/* ---------- Izquierda: 3 recuadros (PUSH · PULL · LEG) ---------- */
+.side-group {
+  width: min(400px, 42vw);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  justify-content: center;
+}
+
+/* Recuadro estilo hud-panel del lab (GRADIENT BORDER): esquinas
+   recortadas, borde 1px, fondo oscuro, glow y puntitos. Por tono. */
+.g-box {
+  --hud-edge: 20px;
+  --hud-clip: polygon(
+    0 0,
+    0 calc(100% - var(--hud-edge)),
+    var(--hud-edge) 100%,
+    100% 100%,
+    100% var(--hud-edge),
+    calc(100% - var(--hud-edge)) 0
+  );
+  --tone: var(--red-500);
+
+  position: relative;
+  border: 1px solid var(--tone);
+  padding: 22px 28px;
+  background: rgba(2, 8, 4, 0.6);
+  box-shadow:
+    0 0 20px var(--glow),
+    inset 0 0 20px var(--glow-inset);
+  clip-path: var(--hud-clip);
+}
+
+.g-box--yellow {
+  --tone: var(--yellow-500);
+  --glow: rgba(0, 255, 65, 0.3);
+  --glow-inset: rgba(0, 255, 65, 0.08);
+}
+.g-box--orange {
+  --tone: var(--orange-500);
+  --glow: rgba(0, 204, 44, 0.3);
+  --glow-inset: rgba(0, 204, 44, 0.08);
+}
+.g-box--red {
+  --tone: var(--red-500);
+  --glow: rgba(0, 143, 17, 0.3);
+  --glow-inset: rgba(0, 143, 17, 0.08);
+}
+
+.g-box::before,
+.g-box::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--tone);
+  box-shadow: 0 0 8px var(--tone);
+}
+
+.g-box::before { top: 8px; left: 8px; }
+.g-box::after { bottom: 8px; right: 8px; }
+
+.g-box__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.g-box__title {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 9px;
+  white-space: nowrap;
+}
+
+/* Delta: tipografía delgada, blanco, sin glow */
+.g-box__delta {
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  color: #fff;
+  text-shadow: none;
+}
+
+.g-box__delta small {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.g-box__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 12px 20px;
+  margin-top: 14px;
+}
+
+.g-box__col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.g-box__col-label {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--chrome-500);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.g-box__col-value {
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #fff;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.delta-pos,
+.delta-neg,
+.delta-flat { color: inherit; }
+.delta-na { color: var(--chrome-500); font-size: 18px; letter-spacing: 2px; }
+
+/* ---------- Derecha: cuenta regresiva (solo el número) ---------- */
+.countdown {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+}
+
+.countdown__num {
+  font-size: clamp(110px, 24vw, 320px);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}

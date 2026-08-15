@@ -1,0 +1,248 @@
+/* ============================================================
+   GYM.OS WALLPAPER — estilo cyberpunk minimalista
+   Sintetizado del análisis cyberpunk-effect (cybercore-css,
+   cyberpunk-css, retro-design-system). Una sola tipografía:
+   Orbitron. Paleta: amarillo · naranja · rojo sobre void.
+   ============================================================ */
+
+:root {
+  /* ---- Void (negro-verdoso, tipo matrix) ---- */
+  --void-100: #12291a;
+  --void-300: #0a1a10;
+  --void-400: #07140c;
+  --void-500: #050e08;
+  --void-700: #020603;
+  --void-800: #010302;
+  --void-900: #000201;
+
+  /* ---- Chrome (texto neutro) ---- */
+  --chrome-100: #d4f5dc;
+  --chrome-300: #8fbf9b;
+  --chrome-400: #6f9e7a;
+  --chrome-500: #4f7a59;
+  --chrome-600: #365a3f;
+
+  /* ---- Paleta Matrix: SOLO 3 colores (verde fósforo) ---- */
+  --yellow-500: #00ff41;
+  --yellow-700: #00cc32;
+  --orange-500: #00cc2c;
+  --orange-600: #009e26;
+  --orange-700: #008611;
+  --red-500: #008f11;
+  --red-600: #006a0c;
+  --red-700: #004a07;
+
+  --font-display: 'Orbitron', system-ui, sans-serif;
+  --ease-cyber: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* ============================================================
+   GLITCH — aberración cromática (bandas FINAS + ráfagas cortas)
+   El estado de reposo está oculto (inset 100%): la base blanca
+   domina y las capas de color solo "interfieren" en ráfagas.
+   Robusto incluso si el blend no se aplica en WebKit.
+   Variante --intense: réplica del "INTENSE" del lab (ciclo 1.5s,
+   offset 4px, bandas finas con clip-path polygon). Tres capas de
+   color: rojo (before), naranja (after) y amarillo (tercera capa
+   .glitch__layer) -> la gama amarillo/naranja/rojo.
+   ============================================================ */
+.glitch {
+  --g1: var(--red-500);
+  --g2: var(--orange-500);
+  --off: 2px;
+  --dur: 3.2s;
+
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  text-shadow: 0 0 16px rgba(240, 241, 245, 0.35);
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform, clip-path;
+  clip-path: inset(100% 0 0 0);
+}
+
+.glitch::before { color: var(--g1); animation: glitch-a var(--dur) infinite linear; }
+.glitch::after { color: var(--g2); animation: glitch-b var(--dur) infinite linear; }
+
+/* Tercera capa de color (amarillo) para tener los 3 colores */
+.glitch__layer {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+  color: var(--yellow-500);
+  mix-blend-mode: screen;
+  will-change: transform, clip-path;
+  clip-path: inset(100% 0 0 0);
+}
+
+.glitch--intense {
+  --off: 4px;
+  --dur: 1.5s;
+}
+.glitch--intense::before { animation: glitch-a-intense var(--dur) infinite linear; }
+.glitch--intense::after { animation: glitch-b-intense var(--dur) infinite linear; }
+.glitch--intense .glitch__layer { animation: glitch-c-intense var(--dur) infinite linear; }
+
+@keyframes glitch-a {
+  0%, 4% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  6% { transform: translate(calc(-1 * var(--off)), 0); clip-path: inset(0 0 90% 0); }
+  9% { transform: translate(var(--off), 0); clip-path: inset(45% 0 45% 0); }
+  12%, 34% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  36% { transform: translate(calc(-1 * var(--off)), 0); clip-path: inset(78% 0 12% 0); }
+  39%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+}
+
+@keyframes glitch-b {
+  0%, 10% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  12% { transform: translate(var(--off), 0); clip-path: inset(20% 0 70% 0); }
+  15% { transform: translate(calc(-1 * var(--off)), 0); clip-path: inset(65% 0 25% 0); }
+  18%, 40% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  42% { transform: translate(var(--off), 0); clip-path: inset(5% 0 88% 0); }
+  45%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+}
+
+/* INTENSE — del lab (cyber-glitch-intense-1/2): bandas finas con
+   clip-path polygon + desplazamiento doble (X e Y). Reposo oculto. */
+@keyframes glitch-a-intense {
+  0% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  5% { transform: translate(var(--off), calc(-1 * var(--off))); clip-path: polygon(0 5%, 100% 5%, 100% 10%, 0 10%); }
+  10% { transform: translate(calc(-2 * var(--off)), 0); clip-path: polygon(0 20%, 100% 20%, 100% 25%, 0 25%); }
+  15% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  50% { transform: translate(calc(-1 * var(--off)), var(--off)); clip-path: polygon(0 40%, 100% 40%, 100% 50%, 0 50%); }
+  55% { transform: translate(var(--off), 0); clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%); }
+  60%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+}
+
+@keyframes glitch-b-intense {
+  0% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  7% { transform: translate(calc(-1 * var(--off)), var(--off)); clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); }
+  12% { transform: translate(var(--off), 0); clip-path: polygon(0 85%, 100% 85%, 100% 95%, 0 95%); }
+  17% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  45% { transform: translate(var(--off), calc(-1 * var(--off))); clip-path: polygon(0 30%, 100% 30%, 100% 35%, 0 35%); }
+  52% { transform: translate(calc(-2 * var(--off)), 0); clip-path: polygon(0 15%, 100% 15%, 100% 25%, 0 25%); }
+  58%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+}
+
+/* Tercera capa (amarillo): ráfagas intercaladas entre rojo/naranja */
+@keyframes glitch-c-intense {
+  0% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  6% { transform: translate(var(--off), var(--off)); clip-path: polygon(0 12%, 100% 12%, 100% 17%, 0 17%); }
+  11% { transform: translate(calc(-1 * var(--off)), calc(-1 * var(--off))); clip-path: polygon(0 68%, 100% 68%, 100% 74%, 0 74%); }
+  16% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+  48% { transform: translate(var(--off), calc(-1 * var(--off))); clip-path: polygon(0 22%, 100% 22%, 100% 28%, 0 28%); }
+  54% { transform: translate(calc(-2 * var(--off)), var(--off)); clip-path: polygon(0 82%, 100% 82%, 100% 90%, 0 90%); }
+  60%, 100% { transform: translate(0); clip-path: inset(100% 0 0 0); }
+}
+
+/* ============================================================
+   FLICKER / BLINK — señal inestable (del lab)
+   ============================================================ */
+.flicker { animation: neon-flicker 4s linear infinite; }
+
+@keyframes neon-flicker {
+  0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% { opacity: 1; }
+  20%, 21.9%, 63%, 63.9%, 65%, 69.9% { opacity: 0.35; }
+}
+
+.blink { animation: blink-vis 1s steps(2, start) infinite; }
+
+@keyframes blink-vis {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ============================================================
+   NEON TEXT — resplandor multicapa (técnica neon.css del lab)
+   Igual que el "FLICKER" de la sección Neón & botones, en rojo.
+   ============================================================ */
+.neon-text--red {
+  color: var(--red-500);
+  text-shadow:
+    0 0 4px var(--red-500),
+    0 0 10px var(--red-500),
+    0 0 20px var(--red-500),
+    0 0 40px var(--red-600),
+    0 0 80px var(--red-700);
+}
+
+.neon-text--yellow {
+  color: var(--yellow-500);
+  text-shadow:
+    0 0 4px var(--yellow-500),
+    0 0 10px var(--yellow-500),
+    0 0 20px var(--yellow-500),
+    0 0 40px var(--yellow-700),
+    0 0 80px var(--yellow-700);
+}
+
+.neon-text--orange {
+  color: var(--orange-500);
+  text-shadow:
+    0 0 4px var(--orange-500),
+    0 0 10px var(--orange-500),
+    0 0 20px var(--orange-500),
+    0 0 40px var(--orange-600),
+    0 0 80px var(--orange-700);
+}
+
+.neon-text--flicker { animation: neon-flicker 4s linear infinite; }
+
+/* ============================================================
+   FONDO — grid tenue + overlays CRT sutiles
+   ============================================================ */
+.fx-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.15;
+  background-image:
+    repeating-linear-gradient(to right, transparent 0 64px, rgba(252, 238, 10, 1) 64px 65px),
+    repeating-linear-gradient(to bottom, transparent 0 64px, rgba(252, 238, 10, 1) 64px 65px);
+}
+
+.fx-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0, 0, 0, 0.22) 2px 3px);
+  opacity: 0.25;
+}
+
+.fx-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.fx-edge-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 42;
+  pointer-events: none;
+  box-shadow: inset 0 0 70px rgba(0, 204, 44, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch::before,
+  .glitch::after,
+  .glitch__layer,
+  .flicker,
+  .blink,
+  .gradient-border::before {
+    animation: none;
+  }
+}

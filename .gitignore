@@ -1,0 +1,10 @@
+node_modules/
+dist/
+
+# Logs generados en runtime
+wallpaper/*.log
+wallpaper/*.log.*
+server/*.log
+
+# Backups automáticos
+wallpaper/*.bak.*
