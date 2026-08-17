@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://github.com/AndresBlancoSierra/gym-wallpaper">
+    <img src="https://raw.githubusercontent.com/AndresBlancoSierra/gym-wallpaper/main/profile.svg" alt="GYM.OS — gym-wallpaper@arch">
+  </a>
+</p>
+
 # GYM.OS — Wallpaper cyberpunk que gamifica tu vida
 
 Wallpaper **HTML animado real** para Hyprland que lee tus notas de gym en
